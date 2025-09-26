@@ -9,8 +9,16 @@ from django.contrib.auth.views import (
 )
 
 
-from .views import RegisterView, email_verification, UserListView, toggle_user_block, ProfileView, ProfileEditView, \
-    CustomLoginView, CustomLogoutView
+from .views import (
+    RegisterView,
+    email_verification,
+    UserListView,
+    toggle_user_block,
+    ProfileView,
+    ProfileEditView,
+    CustomLoginView,
+    CustomLogoutView,
+)
 
 app_name = "users"
 
@@ -54,10 +62,9 @@ urlpatterns = [
     ),
     path("users/", UserListView.as_view(), name="user_list"),
     path("users/block/<int:user_id>/", toggle_user_block, name="toggle_user_block"),
-    path('profile/', ProfileView.as_view(), name='profile'),
-    path('profile_edit/', ProfileEditView.as_view(), name='profile_edit'),
-    path('logout/', CustomLogoutView.as_view(), name='logout'),
-    path('logout-confirm/', CustomLogoutView.as_view(), name='logout_confirm'),
-    path('login/', CustomLoginView.as_view(), name='login')
-
+    path("profile/", ProfileView.as_view(), name="profile"),
+    path("profile_edit/", ProfileEditView.as_view(), name="profile_edit"),
+    path("logout/", CustomLogoutView.as_view(), name="logout"),
+    path("logout-confirm/", CustomLogoutView.as_view(), name="logout_confirm"),
+    path("login/", CustomLoginView.as_view(), name="login"),
 ]

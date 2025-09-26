@@ -1,12 +1,30 @@
 from django.urls import path
 from django.views.decorators.cache import cache_page
 
-from .views import toggle_mailing_status, MailingAttemptListView, send_mailing, HomeView, RecipientDetailView, \
-    RecipientCreateView, RecipientUpdateView, RecipientDeleteView, MessageListView, RecipientListView, \
-    MessageDetailView, MessageCreateView, MessageUpdateView, MessageDeleteView, MailingListView, MailingDetailView, \
-    MailingCreateView, MailingUpdateView, MailingDeleteView, UserStatsView
+from .views import (
+    toggle_mailing_status,
+    MailingAttemptListView,
+    send_mailing,
+    HomeView,
+    RecipientDetailView,
+    RecipientCreateView,
+    RecipientUpdateView,
+    RecipientDeleteView,
+    MessageListView,
+    RecipientListView,
+    MessageDetailView,
+    MessageCreateView,
+    MessageUpdateView,
+    MessageDeleteView,
+    MailingListView,
+    MailingDetailView,
+    MailingCreateView,
+    MailingUpdateView,
+    MailingDeleteView,
+    UserStatsView,
+)
 
-app_name = 'mailing'
+app_name = "mailing"
 
 urlpatterns = [
     # Получатели
@@ -34,7 +52,9 @@ urlpatterns = [
     # Сообщения
     path("messages/", MessageListView.as_view(), name="message_list"),
     path(
-        "messages/<int:pk>/", cache_page(60)(MessageDetailView.as_view()), name="message_detail"
+        "messages/<int:pk>/",
+        cache_page(60)(MessageDetailView.as_view()),
+        name="message_detail",
     ),
     path("messages/create/", MessageCreateView.as_view(), name="message_create"),
     path(
@@ -50,7 +70,9 @@ urlpatterns = [
     # Рассылки
     path("mailings/", MailingListView.as_view(), name="mailing_list"),
     path(
-        "mailings/<int:pk>/", cache_page(60)(MailingDetailView.as_view()), name="mailing_detail"
+        "mailings/<int:pk>/",
+        cache_page(60)(MailingDetailView.as_view()),
+        name="mailing_detail",
     ),
     path("mailings/create/", MailingCreateView.as_view(), name="mailing_create"),
     path(
@@ -75,5 +97,5 @@ urlpatterns = [
         name="mailing_attempt_list",
     ),
     path("mailings/<int:mailing_id>/send/", send_mailing, name="send_mailing"),
-    path("", HomeView.as_view(), name="home")
+    path("", HomeView.as_view(), name="home"),
 ]

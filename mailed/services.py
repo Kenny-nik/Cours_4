@@ -53,7 +53,7 @@ def perform_mailing(mailing_id):
 def get_recipients_from_cache():
     if not CACHE_ENABLED:
         return Recipient.objects.all()
-    key = 'recipient_list'
+    key = "recipient_list"
     recipients = cache.get(key)
     if recipients is not None:
         return recipients
@@ -65,7 +65,7 @@ def get_recipients_from_cache():
 def get_messages_from_cache():
     if not CACHE_ENABLED:
         return Message.objects.all()
-    key = 'message_list'
+    key = "message_list"
     messages = cache.get(key)
     if messages is not None:
         return messages

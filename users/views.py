@@ -105,13 +105,15 @@ class ProfileEditView(LoginRequiredMixin, UpdateView):
 
 
 class CustomLoginView(LoginView):
-    template_name = 'users/login.html'  # Указываем путь к шаблону
-    redirect_authenticated_user = True  # Если пользователь уже авторизован, перенаправляем на другую страницу
-    success_url = reverse_lazy('mailing:home')  # Страница после успешного входа
+    template_name = "users/login.html"  # Указываем путь к шаблону
+    redirect_authenticated_user = (
+        True  # Если пользователь уже авторизован, перенаправляем на другую страницу
+    )
+    success_url = reverse_lazy("mailing:home")  # Страница после успешного входа
 
     def get_success_url(self):
         return self.success_url  # Возвращаем URL для перенаправления после входа
 
 
 class CustomLogoutView(LogoutView):
-    next_page = reverse_lazy('mailing:home')
+    next_page = reverse_lazy("mailing:home")

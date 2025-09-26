@@ -10,6 +10,7 @@
         <li>
             {{ recipient.full_name }} ({{ recipient.email }})
             <a href="{% url 'mailing:recipient_detail' recipient.pk %}">Просмотр</a>
+            <a href="{% url 'mailing:recipient_create' mailing.pk %}">Создать</a>
             <a href="{% url 'mailing:recipient_update' recipient.pk %}">Редактировать</a>
             <a href="{% url 'mailing:recipient_delete' recipient.pk %}">Удалить</a>
         </li>

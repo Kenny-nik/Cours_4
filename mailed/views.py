@@ -14,7 +14,11 @@ from .models import Recipient, Message, MailingAttempt
 from .forms import RecipientForm, MessageForm, MailingForm
 from django.shortcuts import get_object_or_404, redirect, render
 from .models import Mailing
-from .services import perform_mailing, get_recipients_from_cache, get_messages_from_cache
+from .services import (
+    perform_mailing,
+    get_recipients_from_cache,
+    get_messages_from_cache,
+)
 
 
 # Контроллеры для получателей рассылки (Recipients)
@@ -26,7 +30,10 @@ class RecipientListView(LoginRequiredMixin, ListView):
     context_object_name = "recipients"
 
     def get_queryset(self):
-        return get_recipients_from_cache
+        queryset = super().get_queryset()
+        if self.request.user.is_authenticated:
+            return queryset.filter(owner=self.request.user)
+        return queryset.none()
 
 
 class RecipientDetailView(LoginRequiredMixin, DetailView):
@@ -68,7 +75,10 @@ class MessageListView(LoginRequiredMixin, ListView):
     context_object_name = "messages"
 
     def get_queryset(self):
-        return get_messages_from_cache
+        queryset = super().get_queryset()
+        if self.request.user.is_authenticated:
+            return queryset.filter(owner=self.request.user)
+        return queryset.none()
 
 
 class MessageDetailView(LoginRequiredMixin, DetailView):
@@ -110,11 +120,10 @@ class MailingListView(LoginRequiredMixin, ListView):
     context_object_name = "mailings"
 
     def get_queryset(self):
-        user = self.request.user
-        if user.is_staff:  # Менеджеры видят все рассылки
-            return Mailing.objects.all()
-        else:  # Обычные пользователи видят только свои рассылки
-            return Mailing.objects.filter(owner=user)
+        queryset = super().get_queryset()
+        if self.request.user.is_authenticated:
+            return queryset.filter(owner=self.request.user)
+        return queryset.none()
 
 
 class MailingDetailView(LoginRequiredMixin, DetailView):
@@ -232,7 +241,7 @@ class HomeView(LoginRequiredMixin, ListView):
     model = Mailing  # Указывает модель, с которой работает представление
     template_name = "mailing/home.html"  # Имя шаблона
     context_object_name = "mailings"  # Имя переменной в контексте
-    login_url = 'users:login'
+    login_url = "users:login"
 
     def get_context_data(self, **kwargs):
         context = super().get_context_data(**kwargs)
@@ -241,7 +250,9 @@ class HomeView(LoginRequiredMixin, ListView):
         context["unique_recipients"] = Recipient.objects.count()
 
         if self.request.user.is_authenticated:
-            context["latest_mailings"] = Mailing.objects.filter(owner=self.request.user).order_by("-start_time")[:5]
+            context["latest_mailings"] = Mailing.objects.filter(
+                owner=self.request.user
+            ).order_by("-start_time")[:5]
         else:
             context["latest_mailings"] = []  # Для незарегистрированных пользователей
 

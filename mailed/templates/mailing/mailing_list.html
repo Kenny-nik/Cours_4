@@ -10,6 +10,7 @@
         <li>
             {{ mailing.message.subject }} - {{ mailing.status }}
             <a href="{% url 'mailing:mailing_detail' mailing.pk %}">Просмотр</a>
+            <a href="{% url 'mailing:mailing_create' mailing.pk %}">Создать</a>
             <a href="{% url 'mailing:mailing_update' mailing.pk %}">Редактировать</a>
             <a href="{% url 'mailing:mailing_delete' mailing.pk %}">Удалить</a>
         </li>
